@@ -3,7 +3,7 @@ import glob
 import os
 
 color_path = "/Users/william/Downloads/initial/color"
-grayscale_path = "/Users/william/Downloads/initial/grayscale"
+grayscale_path = r"/Users/william/Downloads/initial/grayscale/"
 
 for filename in glob.glob(os.path.join(color_path, '*.png')):
     print(filename)
