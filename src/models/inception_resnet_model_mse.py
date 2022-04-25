@@ -36,7 +36,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 VALIDATION_SIZE = 0.1
 BATCH_SIZE = 32
-EPOCHS = 33
+EPOCHS = 50
 LEARNING_RATE = 0.001
 PATIENCE = 5
 
@@ -298,9 +298,6 @@ model = model.to(device)
 criterion = nn.MSELoss()
 optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
-checkpoint_path = "../model_checkpoints/colorization_model (0.002478).pt"
-model, optimizer, epochs = load_checkpoint(checkpoint_path, model, optimizer)
-
 
 
 def train_model(model, batch_size, patience, n_epochs):
@@ -310,7 +307,7 @@ def train_model(model, batch_size, patience, n_epochs):
     avg_train_losses = []
     avg_valid_losses = []
 
-    early_stopping = EarlyStopping(patience=patience, verbose=True)
+    early_stopping = EarlyStopping(patience=patience, verbose=True, path='../model_checkpoints/checkpoint_mse_II.pt')
 
     for epoch in range(1, EPOCHS + 1):
         model.train()
@@ -357,7 +354,7 @@ def train_model(model, batch_size, patience, n_epochs):
             print("Early stopping")
             break
 
-    model.load_state_dict(torch.load('checkpoint.pt'))
+    model.load_state_dict(torch.load('../model_checkpoints/checkpoint_mse_II.pt'))
 
     return  model, avg_train_losses, avg_valid_losses
 
@@ -403,4 +400,4 @@ for idx in range(100):
       img_ab[idx].cpu()
   )
   img = cv2.convertScaleAbs(predicted_image, alpha=(255.0))
-  cv2.imwrite(f'../../results/mse_results_IV/output_{idx}.png', cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
+  cv2.imwrite(f'../../results/mse_results/output_{idx}.png', cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
